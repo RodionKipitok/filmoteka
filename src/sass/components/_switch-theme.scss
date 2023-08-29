@@ -1,0 +1,363 @@
+// Switcher
+.theme-switcher {
+  .header__section & {
+    position: absolute;
+    top: -30px;
+    right: 20px;
+    @include tablet {
+      top: -30px;
+      right: 28px;
+    }
+  }
+  .library-header .container & {
+    position: absolute;
+    top: -30px;
+    right: 20px;
+    @include tablet {
+      top: -30px;
+      right: 28px;
+    }
+  }
+  position: relative;
+  cursor: pointer;
+}
+
+.theme-switcher__thumb {
+  transition: $transition-duration;
+  position: absolute;
+  top: 1px;
+  left: 25px;
+  box-shadow: 1px 1px 2px $color-accent, 0 0 1em $color-text-light,
+    0 0 0.2em $color-text-lighter;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: $color-accent;
+  box-sizing: border-box;
+  transform: translateX(0);
+  @include tablet {
+    width: 22px;
+    height: 22px;
+  }
+
+  &--after {
+    transition: $transition-duration;
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    box-shadow: 1px 1px 2px $color-accent-secondary, 0 0 1em $color-text-light,
+      0 0 0.2em $color-text-lighter;
+    background-color: $color-accent-secondary;
+  }
+}
+
+.theme-switcher__btn {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border-radius: 12px;
+  border: none;
+  width: 45px;
+  height: 20px;
+  padding: 0px 5px;
+  @include centeredFlex;
+  gap: 5px;
+  cursor: pointer;
+  background-color: $bg-body;
+  @include tablet {
+    width: 50px;
+    height: 25px;
+  }
+}
+
+.theme-switcher__icon {
+  display: block;
+  margin-left: auto;
+  fill: $color-text;
+  @include tablet {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Light theme background
+body {
+  background-color: $bg-body;
+  transition: background-color $transition-duration $transition-animation;
+}
+
+// Dark theme colors
+// body
+body.dark-theme {
+  background-color: $bg-body-dark;
+  transition: background-color $transition-duration $transition-animation;
+
+  //   main header bg-img
+  & .header {
+    background-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.56),
+        rgba(0, 0, 0, 0.56)
+      ),
+      url(../images/main-header-bg-mobile-1x.jpg);
+    @include retina {
+      background-image: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.56),
+          rgba(0, 0, 0, 0.56)
+        ),
+        url(../images/main-header-bg-mobile-2x.jpg);
+    }
+    @include tablet {
+      background-image: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.56),
+          rgba(0, 0, 0, 0.56)
+        ),
+        url(../images/main-header-bg-tablet-1x.jpg);
+      @include retina {
+        background-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.56),
+            rgba(0, 0, 0, 0.56)
+          ),
+          url(../images/main-header-bg-tablet-2x.jpg);
+      }
+    }
+    @include desktop {
+      background-image: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.56),
+          rgba(0, 0, 0, 0.56)
+        ),
+        url(../images/main-header-bg-desktop-1x.jpg);
+      @include retina {
+        background-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.56),
+            rgba(0, 0, 0, 0.56)
+          ),
+          url(../images/main-header-bg-desktop-2x.jpg);
+      }
+    }
+    box-shadow: 0px 6px 40px 6px $color-accent, 0px 1px 5px 0px $color-accent;
+  }
+
+  //   library-header
+  & .library-header {
+    box-shadow: 0px 6px 40px 6px $color-accent, 0px 1px 5px 0px $color-accent;
+  }
+
+  //   swithcer
+  & .theme-switcher__btn {
+    background-color: $bg-body-dark;
+  }
+  & .theme-switcher__icon {
+    fill: $color-text-lighter;
+  }
+
+  //   gallery
+  & .frame:hover,
+  & .frame:focus {
+    box-shadow: 0 0 20px -5px $color-accent;
+  }
+  & .frame__title {
+    color: $color-text-lighter;
+  }
+  & .frame__genres,
+  & .frame__year,
+  & .frame__genres::after {
+    color: $color-accent;
+  }
+  & .frame__poster {
+    // red and white shadow
+    // box-shadow: 2px 2px 8px 0.1px $color-accent-secondary,
+    //   -2px -2px 8px 0.1px $color-border;
+
+    // just red shadow
+    // box-shadow: 0 0 20px -5px $color-accent-secondary;
+
+    // minimal white shadow
+    box-shadow: 0px 0px 4px 0px rgba(255, 255, 255, 0.75);
+  }
+  & .frame:hover .watch-trailer-btn-gallery,
+  & .frame:focus .watch-trailer-btn-gallery,
+  & .frame:hover .frame__raiting,
+  & .frame:focus .frame__raiting {
+    z-index: 2;
+  }
+  & .frame:hover .frame__poster,
+  & .frame:focus .frame__poster {
+    border-bottom-left-radius: 0%;
+    border-bottom-right-radius: 0%;
+    box-shadow: none;
+    filter: saturate(150%);
+  }
+
+  //   library-gellery
+  & .container-nothing__title,
+  & .container-nothing__text {
+    color: $color-text-lighter;
+  }
+  & .container-nothing__link {
+    color: $color-accent;
+  }
+  & .container-nothing__link:hover,
+  & .container-nothing__link:focus {
+    color: $color-accent-secondary;
+  }
+
+  //   button-up
+  & .btn-up-wrapper__text {
+    color: $color-text-lighter;
+  }
+
+  //   pagination
+  & .pagination-button,
+  & .dots {
+    background-color: $bg-body-dark;
+    color: $color-text-lighter;
+    @include font(9px, 1.33, 500, null);
+    transition: text-shadow $transition-duration $transition-animation;
+    @include tablet {
+      @include font(16px, 1.33, 500, null);
+    }
+  }
+  & .pagination-button-arrow-left,
+  & .pagination-button-arrow {
+    color: $color-accent;
+    @include font(9px, 1.33, 500, null);
+    cursor: pointer;
+    transition: text-shadow $transition-duration $transition-animation;
+    @include tablet {
+      @include font(16px, 1.33, 500, null);
+    }
+  }
+  & .pagination--current {
+    background-color: $color-accent;
+    color: $color-text-lighter;
+  }
+  & .pagination-button:hover,
+  & .pagination-button-arrow-left:hover,
+  & .pagination-button-arrow:hover,
+  & .pagination-button:focus,
+  & .pagination-button-arrow-left:focus,
+  & .pagination-button-arrow:focus {
+    text-shadow: 1px 1px 2px $color-accent-secondary, 0 0 1em $color-text-light,
+      0 0 0.2em $color-text-lighter;
+  }
+
+  //   footer
+  & .footer {
+    background-color: $bg-footer-dark;
+    box-shadow: 0px -6px 40px 6px $color-accent, 0px -1px 5px 0px $color-accent;
+  }
+  & .footer__copyright,
+  & .footer__text {
+    color: $color-text-lighter;
+  }
+  & .footer__link {
+    color: $color-text-lighter;
+    background-color: $bg-footer-dark;
+  }
+
+  //   modal-team
+  & .modal__close-first,
+  & .modal__close-second {
+    border: 1px solid #ffffff;
+  }
+  & .modal-wrap {
+    background-color: $bg-body-dark;
+  }
+  & .team__title,
+  & .team__item-icon {
+    color: $color-accent;
+  }
+  & .team__item {
+    background-color: rgba(129, 124, 124, 0.35);
+    box-shadow: 0px 3px 15px $bg-body;
+    transition: $transition-duration;
+  }
+  & .team__item-name {
+    color: $color-text-lighter;
+  }
+
+  //   modal-movie
+  & .backdrop {
+    background: rgba(0, 0, 0, 0.56);
+  }
+  & .modal {
+    background-color: $bg-footer-dark;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  & .modal-close {
+    color: $color-accent-secondary;
+    background-color: $bg-footer-dark;
+    fill: $color-accent;
+  }
+  & modal-close:hover .modal-close__icon,
+  & modal-close:focus .modal-close__icon {
+    fill: $color-accent-secondary;
+  }
+  & .img-modal {
+    box-shadow: 0px 1px 7px 0px rgba(255, 255, 255, 0.75);
+  }
+  & .table,
+  & .title-modal,
+  & .title-about__modal,
+  & .about-text__modal {
+    color: $color-text-lighter;
+  }
+  & .table__text {
+    color: #cccccc;
+  }
+  & .about-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(to top, #cccccc, $color-accent-secondary);
+    border: solid 1px #5c5252;
+  }
+  & .button-watched__modal {
+    color: $color-text-lighter;
+    background: $color-accent-secondary;
+  }
+  & .button-queue__modal {
+    border: 1px solid #000000;
+    background: #cccccc;
+  }
+  & .vote-average {
+    color: $color-text-lighter;
+    background: $color-accent-secondary;
+  }
+  & .vote-count {
+    background: #cccccc;
+    color: $color-text;
+  }
+
+  //   modal trailler
+  & .backdrop-trailer {
+    background-color: #000000fb;
+  }
+  & .modal-trailer {
+    background-color: $bg-body-dark;
+    box-shadow: 0px 1px 3px rgba(255, 0, 0, 0.12),
+      0px 1px 1px rgba(255, 3, 3, 0.14), 0px 2px 1px rgba(182, 181, 181, 0.2);
+  }
+  & .watch-trailer-btn {
+    background-color: $color-accent;
+    color: $color-text-lighter;
+  }
+  & .watch-trailer-btn:hover,
+  & .watch-trailer-btn:focus {
+    background-color: $color-accent-secondary;
+  }
+
+  & .cookies {
+    background-color: $bg-body-dark;
+    box-shadow: 0 -6px 40px 6px #ff6b01, 0 -1px 5px #ff6b01;
+  }
+  & .cookies__title {
+    color: $color-text-lighter;
+  }
+  & .cookies__link {
+    color: $color-text-lighter;
+  }
+}

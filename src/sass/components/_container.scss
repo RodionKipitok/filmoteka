@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  @include bigmobile {
+    width: 480px;
+  }
+
+  @include tablet {
+    width: 768px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  @include minidesktop {
+    width: 1024px;
+  }
+
+  @include desktop {
+    width: 100%;
+    max-width: 1280px;
+  }
+}
+
+main {
+  min-height: calc(100vh - 330px);
+  @include tablet {
+    min-height: calc(100vh - 316px);
+  }
+  @include minidesktop {
+    min-height: calc(100vh - 317px);
+  }
+}

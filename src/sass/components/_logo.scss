@@ -1,0 +1,48 @@
+.logo {
+  @include centeredFlex();
+  gap: 10px;
+  transition: text-shadow $transition-duration $transition-animation,
+    filter $transition-duration $transition-animation;
+  &:hover {
+    text-shadow: 1px 1px 2px $color-accent-secondary, 0 0 1em $color-text-light,
+      0 0 0.2em $color-text-lighter;
+  }
+  &:hover .logo__icon {
+    filter: drop-shadow(0 0 7px $color-accent-secondary);
+    animation: none;
+  }
+}
+
+@keyframes pulsate {
+  from {
+    transform: scale3d(1, 1, 1);
+    stroke: $color-border;
+    filter: drop-shadow(none);
+  }
+  50% {
+    transform: scale3d(1.15, 1.15, 1.15);
+    stroke: $color-accent;
+    filter: drop-shadow(0 0 2px $bg-body-dark);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+    stroke: $color-border;
+    filter: drop-shadow(none);
+  }
+}
+
+.logo__icon {
+  fill: transparent;
+  stroke: $color-text-lighter;
+  animation: pulsate 2.5s infinite alternate;
+}
+
+.logo__text {
+  @include font(30px, 1.67, 500, null);
+  display: none;
+  color: $color-text-lighter;
+  @media screen and (min-width: 480px) {
+    @include centeredFlex();
+    text-align: center;
+  }
+}

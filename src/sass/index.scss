@@ -1,2 +1,19 @@
 @import './common';
-@import './example';
+
+@import './components/spinner';
+@import './components/container';
+@import './components/logo';
+@import './components/switch-theme';
+@import './components/modal-movie';
+@import './components/pagination';
+@import './components/modal-team';
+@import './components/button-up';
+@import './components/modal-trailer';
+@import './components/cookies';
+
+@import './layout/main-header';
+@import './layout/gallery';
+@import './layout/library-header';
+@import './layout/library-gallery';
+@import './layout/footer';
+@import './layout/modal-team';
