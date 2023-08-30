@@ -3,7 +3,7 @@ import { spinnerPlay, spinnerStop } from './js/spinner';
 
 import { renderModalMovie } from './js/API/get-movie-info';
 
-
+import './js/search-movie'
 
 import './js/switch-bg-theme';
 
