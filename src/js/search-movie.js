@@ -18,11 +18,11 @@ const galleryList = document.querySelector('.gallery__list');
 
 window.addEventListener('load',getMovieTrends);
 
-async function getMovieTrends(nuberPage) {
+async function getMovieTrends(numberPage) {
 
-	const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?&page=${nuberPage}`,optionsAxios);
+	const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?&page=${numberPage}`,optionsAxios);
 
-  console.log(response);
+  // console.log(response);
 
 	const moviesTrending = response.data.results;
 
@@ -31,9 +31,6 @@ async function getMovieTrends(nuberPage) {
   
 
 };
-
-
-
 
 function drawingTrendsOnTheMainPage(moviesTrending) {
 
@@ -50,7 +47,9 @@ const markup = moviesTrending.map((movie) => {
   </div></li>`;
     
   } else {
+
     return '';
+
   }
 	
 	}).join('');
@@ -60,30 +59,62 @@ const markup = moviesTrending.map((movie) => {
 };
 
 
-
-
 let searchQuery = '';
 
 searchFrom.addEventListener('submit',getSearchMovie);
-
 
 async function getSearchMovie(event) {
   
   event.preventDefault();
 
 	searchQuery = event.currentTarget.searchQuery.value;
-  //console.log(searchQuery);
 
   const response = await axios.get(`https://api.themoviedb.org/3/search/collection?query=${searchQuery}&include_adult=false&language=en-US&page=1`,optionsAxios)
-  //console.log(response);
+  
+   console.log(response);
 
   const movieSearchAnswer = response.data.results;
-  console.log(movieSearchAnswer);
-  
+
+  const countPageSearch = response.data.total_pages;
+
+  console.log(countPageSearch);
+
   drawingSearchMovieOnThePage(movieSearchAnswer);
  
+  getTotalPagesPaginationSearch(countPageSearch)
+  
+};
+
+
+async function getTotalPagesPaginationSearch(countPageSearch) {
+
+  console.log(countPageSearch);
+
+  const optionsPagination = {
+    totalItems: `${countPageSearch}00`,  // <---- тут должно быть  значение из функции, а оно доступно только внутри функции 
+    itemsPerPage: 10,
+    visiblePages: 10,
+    page: 1,
+    
+  };
+  
+  console.log(optionsPagination.totalItems);
+  
+  const paginationDiv  = document.getElementById('pagination1');
+  const instance = new Pagination(paginationDiv,optionsPagination);
   
   
+  instance.on('beforeMove', function (eventData) {
+    let currentPage = eventData.page;
+
+    // Здесь можно выполнить действия при изменении страницы, например, загрузить новые данные
+    // или обновить отображение на текущей странице.
+  
+      console.log(currentPage);
+      getMovieTrends(currentPage)
+  });
+
+
   
 };
 
@@ -114,18 +145,11 @@ function drawingSearchMovieOnThePage(movieSearchAnswer) {
 
 
 
-
-
-
-
- async function getTotalPagesTrend() {
+ async function getTotalPagesPaginationTrend() {
 
   const response = await axios.get(`https://api.themoviedb.org/3/movie/popular`,optionsAxios);
 
   const totalPage = response.data.total_pages;
-
-  console.log(response);
-
 
   const optionsPagination = {
     totalItems: totalPage,  // <---- тут должно быть  значение из функции, а оно доступно только внутри функции 
@@ -136,17 +160,13 @@ function drawingSearchMovieOnThePage(movieSearchAnswer) {
   };
   
   
-  console.log(optionsPagination.totalItems);
-  
   const paginationDiv  = document.getElementById('pagination1');
-  
-  console.log(paginationDiv);
-  
   const instance = new Pagination(paginationDiv,optionsPagination);
   
   
   instance.on('beforeMove', function (eventData) {
     let currentPage = eventData.page;
+
     // Здесь можно выполнить действия при изменении страницы, например, загрузить новые данные
     // или обновить отображение на текущей странице.
   
@@ -157,23 +177,5 @@ function drawingSearchMovieOnThePage(movieSearchAnswer) {
 };
 
 
-getTotalPagesTrend()
+getTotalPagesPaginationTrend()
 
-
-// paginationDiv.addEventListener('click',getNumberPage);
-
-// function getNumberPage(event) {
-
-//   if(event.target.tagName === 'A'){
- 
-//   let numberPage = event.target.textContent;
-  
-  
-//     console.log(numberPage); 
-//     getMovieTrends(numberPage)   
-
-//   };
-
-//   event.preventDefault();
-  
-// };
