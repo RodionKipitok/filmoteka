@@ -22,7 +22,7 @@ async function getMovieTrends(nuberPage) {
 
 	const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?&page=${nuberPage}`,optionsAxios);
 
-  // console.log(response);
+  console.log(response);
 
 	const moviesTrending = response.data.results;
 
@@ -114,33 +114,50 @@ function drawingSearchMovieOnThePage(movieSearchAnswer) {
 
 
 
-const optionsPagination = {
-  totalItems: 500,  // <---- тут должно быть  значение из функции, а оно доступно только внутри функции 
-  itemsPerPage: 10,
-  visiblePages: 10,
-  page: 1,
+
+
+
+
+ async function getTotalPagesTrend() {
+
+  const response = await axios.get(`https://api.themoviedb.org/3/movie/popular`,optionsAxios);
+
+  const totalPage = response.data.total_pages;
+
+  console.log(response);
+
+
+  const optionsPagination = {
+    totalItems: totalPage,  // <---- тут должно быть  значение из функции, а оно доступно только внутри функции 
+    itemsPerPage: 10,
+    visiblePages: 10,
+    page: 1,
+    
+  };
+  
+  
+  console.log(optionsPagination.totalItems);
+  
+  const paginationDiv  = document.getElementById('pagination1');
+  
+  console.log(paginationDiv);
+  
+  const instance = new Pagination(paginationDiv,optionsPagination);
+  
+  
+  instance.on('beforeMove', function (eventData) {
+    let currentPage = eventData.page;
+    // Здесь можно выполнить действия при изменении страницы, например, загрузить новые данные
+    // или обновить отображение на текущей странице.
+  
+      console.log(currentPage);
+      getMovieTrends(currentPage)
+  });
   
 };
 
 
-console.log(optionsPagination.totalItems);
-
-const paginationDiv  = document.getElementById('pagination1');
-
-console.log(paginationDiv);
-
-const instance = new Pagination(paginationDiv,optionsPagination);
-
-
-instance.on('beforeMove', function (eventData) {
-  let currentPage = eventData.page;
-  // Здесь можно выполнить действия при изменении страницы, например, загрузить новые данные
-  // или обновить отображение на текущей странице.
-
-    console.log(currentPage);
-    getMovieTrends(currentPage)
-});
-
+getTotalPagesTrend()
 
 
 // paginationDiv.addEventListener('click',getNumberPage);
