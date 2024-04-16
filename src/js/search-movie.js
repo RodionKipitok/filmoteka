@@ -17,106 +17,84 @@ let searchQuery = '';
 const searchFrom = document.querySelector('.header__form');
 const searchInput = document.querySelector('.header__form-input');
 const headerSearchbtn = document.querySelector('.header__search-btn');
+const galleryList = document.querySelector('.gallery__list');
+const pagination = document.querySelector('.pagination-library-container');
 
-// searchFrom.addEventListener('submit', getSearchMovie);
+console.log(searchFrom.elements.searchQuery.value);
 
-// async function getSearchMovie(event) {
-//   event.preventDefault();
+searchFrom.addEventListener('submit', onSubmitform);
 
-//   searchQuery = event.currentTarget.searchQuery.value;
+function onSubmitform(event) {
+  event.preventDefault();
+  searchQuery = event.currentTarget.searchQuery.value;
 
-//   const response = await axios.get(
-//     `https://api.themoviedb.org/3/search/collection?query=${searchQuery}&include_adult=false&language=en-US&page=1`,
-//     optionsAxios
-//   );
+  getSearchMovie(searchQuery);
+}
 
-//   console.log(response);
+async function getSearchMovie(searchQuery, page) {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/search/collection?query=${searchQuery}&include_adult=false&language=en-US&page=1`,
+    optionsAxios
+  );
 
-//   const movieSearchAnswer = response.data.results;
+  const movieSearchData = response.data.results;
+  const countPageSearch = response.data.total_pages;
 
-//   const countPageSearch = response.data.total_pages;
+  drawingSearchMovieOnThePage(movieSearchData);
+}
 
-//   console.log(countPageSearch);
+function drawingSearchMovieOnThePage(movieSearchData) {
+  const markup = movieSearchData
+    .map(movie => {
+      if (movie.poster_path !== null) {
+        return `
+        <li><div class="card">
+        <a href="">
+        <img src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="${movie.name}" srcset="">
+        </a>
+        <div class="title">
+        <h3>${movie.name}</h3>
+        </div>
+       </div>
+        </li>`;
+      } else {
+        return;
+      }
+    })
+    .join('');
 
-//   drawingSearchMovieOnThePage(movieSearchAnswer);
+  galleryList.innerHTML = markup;
+}
 
-//   getTotalPagesPaginationSearch(countPageSearch);
-// }
+// Функция для создания кнопок пагинации
+function createPaginationButtons(totalPages) {
+  pagination.innerHTML = '';
 
-// async function getTotalPagesPaginationSearch(countPageSearch) {
-//   console.log(countPageSearch);
+  // Определяем диапазон кнопок для отображения
+  let startPage = 1;
+  let endPage = Math.min(totalPages, 10); // Отображаем не более 10 кнопок
 
-//   const optionsPagination = {
-//     totalItems: `${countPageSearch}00`, // <---- тут должно быть  значение из функции, а оно доступно только внутри функции
-//     itemsPerPage: 10,
-//     visiblePages: 10,
-//     page: 1,
-//   };
+  // Если текущая страница находится во второй половине доступных страниц, сдвигаем диапазон
+  if (currentPage > 5 && totalPages > 10) {
+    startPage = currentPage - 4;
+    endPage = currentPage + 5;
+  }
 
-//   console.log(optionsPagination.totalItems);
+  Array.from({ length: endPage - startPage + 1 }).forEach((_, index) => {
+    const pageNumber = startPage + index;
+    const btn = document.createElement('button');
+    btn.classList.add('.pagination-button');
+    btn.textContent = pageNumber;
+    btn.addEventListener('click', () => {
+      currentPage = pageNumber;
+      getSearchMovie(currentPage);
+    });
 
-//   const paginationDiv = document.getElementById('pagination1');
-//   const instance = new Pagination(paginationDiv, optionsPagination);
+    // Добавляем класс на текущую страницу
+    if (pageNumber === currentPage) {
+      btn.classList.add('active');
+    }
 
-//   instance.on('beforeMove', function (eventData) {
-//     let currentPage = eventData.page;
-
-//     // Здесь можно выполнить действия при изменении страницы, например, загрузить новые данные
-//     // или обновить отображение на текущей странице.
-
-//     console.log(currentPage);
-//     getMovieTrends(currentPage);
-//   });
-// }
-
-// function drawingSearchMovieOnThePage(movieSearchAnswer) {
-//   const markup = movieSearchAnswer
-//     .map(movie => {
-//       if (movie.poster_path !== null) {
-//         return `<li><div class="card"><a href="">
-//         <img src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="${movie.name}" srcset="">
-//       </a>
-//       <div class="title">
-//         <h3>${movie.name}</h3>
-
-//       </div>
-//     </div></li>`;
-//       } else {
-//         return '';
-//       }
-//     })
-//     .join('');
-
-//   galleryList.innerHTML = markup;
-// }
-
-// async function getTotalPagesPaginationTrend() {
-//   const response = await axios.get(
-//     `https://api.themoviedb.org/3/movie/popular`,
-//     optionsAxios
-//   );
-
-//   const totalPage = response.data.total_pages;
-
-//   const optionsPagination = {
-//     totalItems: totalPage, // <---- тут должно быть  значение из функции, а оно доступно только внутри функции
-//     itemsPerPage: 10,
-//     visiblePages: 10,
-//     page: 1,
-//   };
-
-//   const paginationDiv = document.getElementById('pagination1');
-//   const instance = new Pagination(paginationDiv, optionsPagination);
-
-//   instance.on('beforeMove', function (eventData) {
-//     let currentPage = eventData.page;
-
-//     // Здесь можно выполнить действия при изменении страницы, например, загрузить новые данные
-//     // или обновить отображение на текущей странице.
-
-//     console.log(currentPage);
-
-//   });
-// }
-
-// getTotalPagesPaginationTrend();
+    pagination.appendChild(btn);
+  });
+}
